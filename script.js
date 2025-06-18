@@ -1,7 +1,6 @@
 document.addEventListener('alpine:init', () => {
   Alpine.data('clockApp', () => ({
-    timezone: "0", // Keep it as string for select binding
-
+    timezone: "0",
     hourStyle: '',
     minuteStyle: '',
     secondStyle: '',
@@ -10,7 +9,7 @@ document.addEventListener('alpine:init', () => {
       this.updateClock();
       setInterval(() => this.updateClock(), 1000);
 
-      // React to timezone changes automatically
+      // Watch for timezone changes
       this.$watch('timezone', () => {
         this.updateClock();
       });
@@ -18,13 +17,15 @@ document.addEventListener('alpine:init', () => {
 
     updateClock() {
       const now = new Date();
-      const offset = parseInt(this.timezone); // string to number
 
-      now.setHours(now.getUTCHours() + offset);
+      // Adjust based on selected timezone
+      const offset = parseInt(this.timezone);
+      const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      const adjusted = new Date(utc + 3600000 * offset);
 
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours() % 12;
+      const seconds = adjusted.getSeconds();
+      const minutes = adjusted.getMinutes();
+      const hours = adjusted.getHours() % 12;
 
       this.secondStyle = `transform: rotate(${seconds * 6}deg)`;
       this.minuteStyle = `transform: rotate(${minutes * 6}deg)`;
