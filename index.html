@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Alpine Analog Clock</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <script defer src="script.js"></script>
 </head>
 <body x-data="clockApp">
-  <h1>Analog Clock hihi(Alpine.js)</h1>
+  <h1>Analog Clock with Timezone</h1>
 
   <div class="clock">
     <div class="hand hour" :style="hourStyle"></div>
@@ -19,14 +19,13 @@
 
   <div class="selector">
     <label>Select Timezone:</label>
-<select x-model="timezone">
-  <option value="0">UTC</option>
-  <option value="8">Malaysia (UTC+8)</option>
-  <option value="-5">New York (UTC-5)</option>
-  <option value="1">Berlin (UTC+1)</option>
-  <option value="9">Tokyo (UTC+9)</option>
-</select>
-
+    <select x-model="timezone">
+      <option value="0">UTC</option>
+      <option value="8">Malaysia (UTC+8)</option>
+      <option value="-5">New York (UTC-5)</option>
+      <option value="1">Berlin (UTC+1)</option>
+      <option value="9">Tokyo (UTC+9)</option>
+    </select>
   </div>
 </body>
 </html>
