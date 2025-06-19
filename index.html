@@ -125,20 +125,18 @@
           this.secondStyle = `transform: rotate(${seconds * 6}deg);`;
         },
 
-        fetchWeather() {
-          fetch('weather.json')
-            .then(res => res.json())
-            .then(data => {
-              this.weather.temp = data.current.temp_c + "°C";
-              this.weather.condition = data.current.condition.text;
-            })
-            .catch(err => {
-              console.error("Weather fetch failed:", err);
-              this.weather.temp = "N/A";
-              this.weather.condition = "Unavailable";
-            });
-        }
-      };
+fetch('weather.json')
+  .then(res => res.json())
+  .then(data => {
+    this.weather.temp = data.current.temp_c + "°C";
+    this.weather.condition = data.current.condition.text;
+  })
+  .catch(err => {
+    console.error("Weather fetch failed:", err);
+    this.weather.temp = "N/A";
+    this.weather.condition = "Unavailable";
+  });
+
     });
 
     // News App
