@@ -15,34 +15,21 @@ jobs:
         with:
           ref: main
 
-      - name: Check API key exists
-        env:
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-        run: |
-          if [ -z "$RAPIDAPI_KEY" ]; then
-            echo "❌ RAPIDAPI_KEY is empty"
-            exit 1
-          else
-            echo "✅ RAPIDAPI_KEY is set"
-          fi
-
       - name: Fetch weather from RapidAPI
         env:
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
         run: |
-          echo "Fetching weather data..."
-          curl -v -H "x-rapidapi-key: $RAPIDAPI_KEY" \
+          curl -s -H "x-rapidapi-key: $RAPIDAPI_KEY" \
                -H "x-rapidapi-host: weatherapi-com.p.rapidapi.com" \
-               "https://weatherapi-com.p.rapidapi.com/current.json?q=Kuala%20Lumpur" \
+               "https://weatherapi-com.p.rapidapi.com/current.json?q=Kuala Lumpur" \
                -o weather.json
 
-          echo "✅ Done fetching. Preview weather.json:"
-          cat weather.json || echo "❌ weather.json not found"
-
       - name: Commit and push weather.json
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add weather.json
           git diff --cached --quiet || git commit -m "Update weather.json"
-          git push origin main
+          git push https://x-access-token:${GH_TOKEN}@github.com/Z-Fikri17/alpineclock.git main
