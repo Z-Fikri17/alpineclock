@@ -15,14 +15,29 @@ jobs:
         with:
           ref: main
 
+      - name: Check API key exists
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+        run: |
+          if [ -z "$RAPIDAPI_KEY" ]; then
+            echo "❌ RAPIDAPI_KEY is empty"
+            exit 1
+          else
+            echo "✅ RAPIDAPI_KEY is set"
+          fi
+
       - name: Fetch weather from RapidAPI
         env:
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
         run: |
-          curl -s -H "x-rapidapi-key: $RAPIDAPI_KEY" \
+          echo "Fetching weather data..."
+          curl -v -H "x-rapidapi-key: $RAPIDAPI_KEY" \
                -H "x-rapidapi-host: weatherapi-com.p.rapidapi.com" \
-               "https://weatherapi-com.p.rapidapi.com/current.json?q=Kuala Lumpur" \
+               "https://weatherapi-com.p.rapidapi.com/current.json?q=Kuala%20Lumpur" \
                -o weather.json
+
+          echo "✅ Done fetching. Preview weather.json:"
+          cat weather.json || echo "❌ weather.json not found"
 
       - name: Commit and push weather.json
         run: |
