@@ -130,25 +130,19 @@
         this.secondStyle = `transform: rotate(${seconds * 6}deg);`;
       },
   
-      fetchWeather() {
-        fetch('https://weatherapi-com.p.rapidapi.com/current.json?q=Kuala Lumpur', {
-          method: 'GET',
-          headers: {
-            'x-rapidapi-key': '1b41c8ed86msh7f13efae739721dp13f7adjsn93896355eb0e',
-            'x-rapidapi-host': 'weatherapi-com.p.rapidapi.com'
-          }
-        })
-        .then(res => res.json())
-        .then(data => {
-          this.weather.temp = data.current.temp_c + "°C";
-          this.weather.condition = data.current.condition.text;
-        })
-        .catch(err => {
-          console.error("Weather fetch failed:", err);
-          this.weather.temp = "N/A";
-          this.weather.condition = "Unavailable";
-        });
-      }
+fetchWeather() {
+  fetch('weather.php')
+    .then(res => res.json())
+    .then(data => {
+      this.weather.temp = data.current.temp_c + "°C";
+      this.weather.condition = data.current.condition.text;
+    })
+    .catch(err => {
+      console.error("Weather fetch failed:", err);
+      this.weather.temp = "N/A";
+      this.weather.condition = "Unavailable";
+    });
+}
     }));
   
     // News App
