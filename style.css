@@ -107,6 +107,26 @@ body {
 }
 
 .news-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
   margin-bottom: 15px;
 }
+
+.news-item:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.news-item a {
+  text-decoration: none;
+  color: #1a73e8;
+  font-weight: 500;
+}
+
+.news-item a:hover {
+  text-decoration: underline;
+}
+
 
