@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          ref: main  # ensure correct branch
+          ref: main
 
       - name: Fetch weather from RapidAPI
         env:
@@ -24,15 +24,10 @@ jobs:
                "https://weatherapi-com.p.rapidapi.com/current.json?q=Kuala Lumpur" \
                -o weather.json
 
-      - name: Commit weather.json if changed
+      - name: Commit and push weather.json
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-
-          if ! git diff --quiet weather.json; then
-            git add weather.json
-            git commit -m "Update weather data"
-            git push
-          else
-            echo "No changes in weather.json"
-          fi
+          git add weather.json
+          git diff --cached --quiet || git commit -m "Update weather.json"
+          git push origin main
