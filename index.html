@@ -124,10 +124,10 @@
           this.minuteStyle = `transform: rotate(${minutes * 6}deg);`;
           this.secondStyle = `transform: rotate(${seconds * 6}deg);`;
         },
-
-fetch('weather.json')
+fetch('https://z-fikri17.github.io/alpineclock/weather.json')
   .then(res => res.json())
   .then(data => {
+    // Example:
     this.weather.temp = data.current.temp_c + "°C";
     this.weather.condition = data.current.condition.text;
   })
@@ -136,6 +136,7 @@ fetch('weather.json')
     this.weather.temp = "N/A";
     this.weather.condition = "Unavailable";
   });
+
 
     });
 
