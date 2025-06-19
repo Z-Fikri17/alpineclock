@@ -2,7 +2,7 @@ name: Fetch Weather JSON
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # every 10 minutes
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout gh-pages branch
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          ref: gh-pages
+          ref: main
 
       - name: Fetch weather from RapidAPI
         env:
@@ -23,11 +23,15 @@ jobs:
                -H "x-rapidapi-host: weatherapi-com.p.rapidapi.com" \
                "https://weatherapi-com.p.rapidapi.com/current.json?q=Kuala Lumpur" \
                -o weather.json
+          cat weather.json  # For debugging output
 
       - name: Commit and push weather.json
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add weather.json
-          git diff --cached --quiet || git commit -m "Update weather.json"
-          git push origin gh-pages
+          if [ -s weather.json ]; then
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add weather.json
+            git diff --cached --quiet || git commit -m "Update weather.json"
+            git push origin main
+          else
+            echo "weather.json is empty. Skipping commit."
