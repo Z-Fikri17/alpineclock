@@ -86,59 +86,57 @@
     </div>
   </template>
 </div>
-
 <script>
   document.addEventListener('alpine:init', () => {
     // Clock + Weather App
-    Alpine.data('clockApp', () => {
-      return {
-        timezone: "8",
-        hourStyle: '',
-        minuteStyle: '',
-        secondStyle: '',
-        digitalTime: '',
-        weather: { temp: 'Loading...', condition: 'Loading...' },
+    Alpine.data('clockApp', () => ({
+      timezone: "8",
+      hourStyle: '',
+      minuteStyle: '',
+      secondStyle: '',
+      digitalTime: '',
+      weather: { temp: 'Loading...', condition: 'Loading...' },
 
-        init() {
-          this.updateClock();
-          this.fetchWeather();
-          setInterval(() => this.updateClock(), 1000);
-          setInterval(() => this.fetchWeather(), 300000);
-          this.$watch('timezone', () => this.updateClock());
-        },
+      init() {
+        this.updateClock();
+        this.fetchWeather();
+        setInterval(() => this.updateClock(), 1000);
+        setInterval(() => this.fetchWeather(), 300000);
+        this.$watch('timezone', () => this.updateClock());
+      },
 
-        updateClock() {
-          const now = new Date();
-          const offset = parseInt(this.timezone);
-          const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-          const adjusted = new Date(utc + offset * 3600000);
+      updateClock() {
+        const now = new Date();
+        const offset = parseInt(this.timezone);
+        const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+        const adjusted = new Date(utc + offset * 3600000);
 
-          const hours = adjusted.getHours();
-          const minutes = adjusted.getMinutes();
-          const seconds = adjusted.getSeconds();
+        const hours = adjusted.getHours();
+        const minutes = adjusted.getMinutes();
+        const seconds = adjusted.getSeconds();
 
-          const pad = n => n.toString().padStart(2, '0');
-          this.digitalTime = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        const pad = n => n.toString().padStart(2, '0');
+        this.digitalTime = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 
-          this.hourStyle = `transform: rotate(${((hours % 12) + minutes / 60) * 30}deg);`;
-          this.minuteStyle = `transform: rotate(${minutes * 6}deg);`;
-          this.secondStyle = `transform: rotate(${seconds * 6}deg);`;
-        },
-fetch('https://z-fikri17.github.io/alpineclock/weather.json')
-  .then(res => res.json())
-  .then(data => {
-    // Example:
-    this.weather.temp = data.current.temp_c + "°C";
-    this.weather.condition = data.current.condition.text;
-  })
-  .catch(err => {
-    console.error("Weather fetch failed:", err);
-    this.weather.temp = "N/A";
-    this.weather.condition = "Unavailable";
-  });
+        this.hourStyle = `transform: rotate(${((hours % 12) + minutes / 60) * 30}deg);`;
+        this.minuteStyle = `transform: rotate(${minutes * 6}deg);`;
+        this.secondStyle = `transform: rotate(${seconds * 6}deg);`;
+      },
 
-
-    });
+      fetchWeather() {
+        fetch('https://z-fikri17.github.io/alpineclock/weather.json')
+          .then(res => res.json())
+          .then(data => {
+            this.weather.temp = data.current.temp_c + "°C";
+            this.weather.condition = data.current.condition.text;
+          })
+          .catch(err => {
+            console.error("Weather fetch failed:", err);
+            this.weather.temp = "N/A";
+            this.weather.condition = "Unavailable";
+          });
+      }
+    }));
 
     // News App
     Alpine.data('newsApp', () => ({
@@ -159,6 +157,7 @@ fetch('https://z-fikri17.github.io/alpineclock/weather.json')
     }));
   });
 </script>
+
 
 
   
