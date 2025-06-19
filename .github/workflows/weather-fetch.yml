@@ -2,7 +2,7 @@ name: Fetch Weather JSON
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # setiap 10 minit
+    - cron: "*/10 * * * *"  # Run every 10 minutes
   workflow_dispatch:
 
 jobs:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
           ref: main
