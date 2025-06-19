@@ -87,21 +87,16 @@
   </template>
 </div>
 
-  
-
-  
-  
-  
-
-<script>
-Alpine.data('clockApp', () => {
-  return {
+ <script>
+document.addEventListener('alpine:init', () => {
+  // Clock + Weather App
+  Alpine.data('clockApp', () => ({
     timezone: "8",
     hourStyle: '',
     minuteStyle: '',
     secondStyle: '',
     digitalTime: '',
-    weather: { temp: '', condition: '' },
+    weather: { temp: 'Loading...', condition: 'Loading...' },
 
     init() {
       this.updateClock();
@@ -142,29 +137,28 @@ Alpine.data('clockApp', () => {
           this.weather.condition = "Unavailable";
         });
     }
-  };
-});
+  }));
 
-  
-    // News App
-    Alpine.data('newsApp', () => ({
-      articles: [],
-      async fetchNews() {
-        try {
-          const res = await fetch("https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/news/rss.xml");
-          const data = await res.json();
-          this.articles = data.items || [];
-        } catch (err) {
-          console.error("RSS News fetch failed:", err);
-        }
-      },
-      formatDate(dateStr) {
-        const date = new Date(dateStr);
-        return date.toLocaleString(); // Optional: customize format here
+  // News App
+  Alpine.data('newsApp', () => ({
+    articles: [],
+    async fetchNews() {
+      try {
+        const res = await fetch("https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/news/rss.xml");
+        const data = await res.json();
+        this.articles = data.items || [];
+      } catch (err) {
+        console.error("RSS News fetch failed:", err);
       }
-    }));
-  });
-  </script>
+    },
+    formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleString();
+    }
+  }));
+});
+</script>
+
   
 </body>
 </html>
